@@ -14,5 +14,17 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return "Welcome to adaa product";
+});
+
+
+$router->group(['prefix' => 'api'], function() use ($router){
+    $router->post('/register', 'AuthController@register');
+    $router->post('/login', 'AuthController@login');
+    $router->group(['middleware' => 'auth'], function() use ($router){
+        $router->post('logout', 'AuthController@logout');
+        $router->get('refresh', 'AuthController@refresh');
+        $router->post('refresh', 'AuthController@refresh');
+        $router->post('profile', 'AuthController@profile');
+    });
 });
