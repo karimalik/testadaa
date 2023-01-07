@@ -19,12 +19,23 @@ $router->get('/', function () use ($router) {
 
 
 $router->group(['prefix' => 'api'], function() use ($router){
-    $router->post('/register', 'AuthController@register');
-    $router->post('/login', 'AuthController@login');
+    /**route login and register */
+    $router->post('register', 'AuthController@register');
+    $router->post('login', 'AuthController@login');
+
     $router->group(['middleware' => 'auth'], function() use ($router){
+        /**route authentificated */
         $router->post('logout', 'AuthController@logout');
         $router->get('refresh', 'AuthController@refresh');
         $router->post('refresh', 'AuthController@refresh');
         $router->post('profile', 'AuthController@profile');
+
+        /**route product */
+        $router->get('product', 'ProductController@showAllProducts');
+        $router->get('product/{id}', 'ProductController@ShowOneProducts');
+        $router->post('product', 'ProductController@create');
+        $router->put('product/{id}', 'ProductController@update');
+        $router->delete('product/{id}', 'ProductController@delete');
+        
     });
 });
